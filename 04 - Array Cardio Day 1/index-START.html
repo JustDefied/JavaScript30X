@@ -35,31 +35,98 @@
       'Billings, Josh', 'Birrell, Augustine', 'Blair, Tony', 'Beecher, Henry', 'Biondo, Frank'
     ];
     
-    // Array.prototype.filter()
-    // 1. Filter the list of inventors for those who were born in the 1500's
+    // Array.prototype.filter()                                                 
+    // 1. Filter the list of inventors for those who were born in the 1500's    .filter() - filter down items with return true and return false (false can be implicit)
+    const fifteenList = inventors.filter( function(inventor)  {
+      if (inventor.year >= 1500 && inventor.year < 1600) {
+        return true;    // i.e. keep result
+      }
+      // returning nothing == returning false
+    });
 
-    // Array.prototype.map()
+    // shortened code
+    // change 1. since we are returning boolean, just return the result of the comparison
+    // change 2. use an arrow function, which evaluates and returns the expression on 
+    //           the right if no curly braces are used (i.e. only for 1-liners)
+    const fifteenList2 = inventors.filter( inventor => inventor.year >= 1500 && inventor.year < 1600 );    
+
+    console.table(fifteenList);
+    console.table(fifteenList2);
+
+    const passedEighteensList = inventors.filter( inventor => (inventor.passed >= 1800 && inventor.passed < 1900) );
+    console.table(passedEighteensList);
+
+    // Array.prototype.map()                                                        .map(func(i)) - return an aray of same size, doing some function to each item
     // 2. Give us an array of the inventors first and last names
+    const fullNames = inventors.map(inventor => `${inventor.first} ${inventor.last}` );
+    console.table(fullNames);
 
-    // Array.prototype.sort()
+
+    // Array.prototype.sort()                                                       .sort(func(a,b)) - sorts an array, use return 1 and return -1 to sort
     // 3. Sort the inventors by birthdate, oldest to youngest
+    const sortedBirth = inventors.sort( (a, b) => {
+      if (a.year > b.year) return 1;
+      return -1;
+    })
 
-    // Array.prototype.reduce()
+    // shortened code
+    // change: use ternary opereator
+    const sortedBirth2 = inventors.sort( (a, b) => (a.year > b.year) ? 1 : -1 );
+
+    console.table(sortedBirth);
+    console.table(sortedBirth2);
+
+    // Array.prototype.reduce()                                           .reduce(func(storage, i), initialVal) - add to storage with each i (initial must be stated)
     // 4. How many years did all the inventors live all together?
+    const sumAges = inventors.reduce( (total, inventor) => (total + (inventor.passed - inventor.year)), 0 );
+
+    console.table(sumAges);
 
     // 5. Sort the inventors by years lived
+    const ageSorted = inventors.sort( (a, b) => (a.passed - a.year) > (b.passed - b.year) ? -1 : 1 );
+
+    console.table(ageSorted);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+
+    //DONE IN BROWSER DEV CONSOLE
+    const yes = document.querySelectorAll(".mw-category li a");                      // get all relevant objects in a nodeList
+    myList = Array.from(yes);                                                       // convert nodeList into array
+    const filteredDe3 = myList.filter( name => name.innerText.includes("de"));      // filter nodes with 'de'
+    const filteredDe4 = filteredDe3.map( name => name.innerText );                  // strip all data except innerText
+
+    // shortened/concise code
+    const linksArray = Array.from(document.querySelectorAll(".mw-category li a"));
+    const filterDe = linksArray
+                        .map( link => link.textContent)
+                        .filter( name => name.includes('de') );
 
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
 
+    const sortedPeople = people.sort( (a, b) => {
+      const [aLast, aFirst] = a.split(', ');
+      const [bLast, bFirst] = b.split(', ');
+      return (aLast > bLast) ? 1 : -1;
+    })
+
+    console.table(sortedPeople);
+
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
 
+    const dataTally = data.reduce( (type, item) => {
+      if (!type[item]) {
+        type[item] = 0;
+      } 
+      type[item]++;
+      return type;
+    },  {})
+
+    console.table(dataTally);
   </script>
 </body>
 </html>
